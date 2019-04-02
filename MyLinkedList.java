@@ -1,5 +1,6 @@
 public class MyLinkedList{
   private Node headReference;
+  private Node tailReference;
 
   public String toString() {
     Node currentNode = headReference;
@@ -14,66 +15,55 @@ public class MyLinkedList{
 
     return ans + "]";
   }
+
+  public int size() {
+    Node check = headReference;
+    int count = 0;
+    if (headReference != null){
+      count++;
+      while (check.getReferenceToNextNode() != null){
+        count++;
+        check = check.getReferenceToNextNode();
+      }
+    }
+    return count;
+  }
+
     //not REQUIRED, but it would be crazy of you not to have this
   public MyLinkedList() {
     headReference = null;
+    tailReference = null;
   }
 
   public void clear(){
     headReference = null;
+    tailReference = null;
   }
     //reset the list to an empty state. Very similar to the constructor.
-  public boolean add(E){
-    if (index == 0){
-      addAsHead(val);
-    }else{
-      Node prevReference = findReferenceAtIndex(index - 1);
-      // Node prevReference = headReference;
-      // for (int counter = 0; counter < index-1; counter++){
-      //   prevReference = prevReference.getReferenceToNextNode();
-      //}
-
-      Node referenceAtIndex = prevReference.getReferenceToNextNode();
-      Node newNode = new Node(val, referenceAtIndex);
-      prevReference.setReferenceToNextNode(newNode);
+  public boolean add(Object val){
+    if (size() == 0){
+      Node head = new Node(val);
+      headReference = head;
+      tailReference = head;
     }
+    Node nextNode = new Node(val);
+    tailReference.setReferenceToNextNode(nextNode);
+    tailReference = nextNode;
+    return true;
   }
 
-  public boolean addAsHead( Object val) {
-     Node head = new Node(val, headReference);
-     headReference = head;
-     return true;
-  }
     //add an element to the end of the list (the boolean would be true all the time if you want to conform to list standards)
-  public void extend(MyLinkedList<E> other){
-    
+  public void extend(MyLinkedList other){
+    tailReference.setReferenceToNextNode(other.headReference);
+    other.clear();
   }
      /**in O(1) time, connect the other list to the end of this list.
     The other list is then reset to size 0 (do not wipe out the nodes, just disconnect them.)
     This is how you will merge lists together for your radix sort.
     **/
   public Object removeFront(){
-    remove(0);
-  }
-
-  public Object remove(int index){
-    Object returner = 0;
-    if (index == 0){
-      returner = headReference.getCargoReference();
-      headReference = headReference.getReferenceToNextNode();
-    }else if (index == size() - 1){
-      Node secondToLast = findReferenceAtIndex(index - 2);
-      Node newLastReference = secondToLast.getReferenceToNextNode();
-      returner = newLastReference.getReferenceToNextNode().getCargoReference();
-      Node newLast = new Node(newLastReference.getCargoReference());
-      secondToLast.setReferenceToNextNode(newLast);
-
-    }else{
-      Node refBefore = findReferenceAtIndex(index - 1);
-      returner = refBefore.getReferenceToNextNode().getCargoReference();
-      Node refAfter = findReferenceAtIndex(index+1);
-      refBefore.setReferenceToNextNode(refAfter);
-    }
+    Object returner = headReference.getReferenceToNextNode();
+    headReference = headReference.getReferenceToNextNode();
     return returner;
   }
     //remove the 1st element of the list, and return that value.
