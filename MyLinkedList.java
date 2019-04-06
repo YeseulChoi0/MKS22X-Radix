@@ -45,27 +45,46 @@ public class MyLinkedList{
       Node head = new Node(val);
       headReference = head;
       tailReference = head;
+    }else{
+      Node nextNode = new Node(val);
+      tailReference.setReferenceToNextNode(nextNode);
+      tailReference = nextNode;
     }
-    Node nextNode = new Node(val);
-    tailReference.setReferenceToNextNode(nextNode);
-    tailReference = nextNode;
     return true;
   }
 
     //add an element to the end of the list (the boolean would be true all the time if you want to conform to list standards)
   public void extend(MyLinkedList other){
-    tailReference.setReferenceToNextNode(other.headReference);
-    other.clear();
+    if (headReference == null){
+      headReference = other.headReference;
+      tailReference = other.tailReference;
+      other.clear();
+    }else if (other.headReference == null) {
+      return;
+    }else{
+      tailReference.setReferenceToNextNode(other.headReference);
+      tailReference = other.tailReference;
+      other.clear();
+    }
+  }
+
+  public int firstElement(){
+    return (int)headReference.getCargoReference();
   }
      /**in O(1) time, connect the other list to the end of this list.
     The other list is then reset to size 0 (do not wipe out the nodes, just disconnect them.)
     This is how you will merge lists together for your radix sort.
     **/
   public Object removeFront(){
+    if (size() == 0){
+      return -1;
+    }
     Object returner = headReference.getReferenceToNextNode();
     headReference = headReference.getReferenceToNextNode();
     return returner;
   }
+
+
     //remove the 1st element of the list, and return that value.
 
   public class Node {
