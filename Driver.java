@@ -22,8 +22,8 @@ public class Driver{
     Radix sorter = new Radix();
     int[] list = {1, 12, 16, 32, 1, 0, 0, 39, 4, 2, 45, 9, 5};
     int[] negatives = {-4, 1, 2, -6, 19, -235, 94, 1};
-    sorter.radixsort(list);
-    //sorter.radixsort(negatives);
+    //sorter.radixsort(list);
+    sorter.radixsort(negatives);
 
 
   }
